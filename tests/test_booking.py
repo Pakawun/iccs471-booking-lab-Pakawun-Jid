@@ -31,6 +31,12 @@ class BookingServiceTests(unittest.TestCase):
             self.service.create_booking("A", 570, 630, "Mali")
         self.assertEqual(self.service.list_bookings(), (first,))
 
+    def test_rejects_contained_booking_in_same_room(self) -> None:
+        first = self.service.create_booking("A", 540, 600, "Narin")
+        with self.assertRaises(ValueError):
+            self.service.create_booking("A", 550, 560, "Mali")
+        self.assertEqual(self.service.list_bookings(), (first,))
+
     def test_allows_adjacent_bookings_in_same_room(self) -> None:
         first = self.service.create_booking("A", 540, 600, "Narin")
         second = self.service.create_booking("A", 600, 660, "Mali")
